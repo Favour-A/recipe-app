@@ -1,0 +1,66 @@
+#foodCategories {
+    background-image: linear-gradient(to right, #888, rgba(255, 68, 0, 0.267));
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0 1rem 0;
+}
+.upperDisplay {
+    background-color: #88888888;
+    display: flex;
+}
+#search {
+    top: 20px;
+}
+#foodCategories .foodImage {
+    order: 1;
+    width: 50%;
+    height: 100%;
+    padding: 1rem;
+}
+#foodCategories .foodImage img {
+    width: 80%;
+    height: 80%;
+    object-fit:contain;
+}
+#foodCategories .foodImage img:hover {
+    transform: scale(1.1);
+}
+#foodCategories .foodImage img:active {
+    transform: scale(1.2);
+}
+#foodCategories .foodDescription {
+    order: 2;
+    width: 50%;
+    height: 100%;
+    padding: 4rem 2rem 4rem 2rem;
+    text-align: center;
+    align-items: center;
+}
+#foodCategories .foodDescription p {
+    font-size: 1rem;
+    color: #000;
+    font-weight: bold;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#heading button {
+    order: 1;
+    border: none;
+    background-color: transparent;
+    right: 0;
+    text-align: left;
+    color: orangered;
+    font-weight: bold;
+    font-style: italic;
+    font-family: 'helvetica';
+    font-size: 1.5rem;
+}
+#heading button:hover {
+    color: #000;
+}
+#heading span {
+    font-size: 2rem;
+   
+}
