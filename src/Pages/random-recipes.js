@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { GoArrowRight } from "react-icons/go";
 import { IoSearchSharp } from "react-icons/io5";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -66,7 +67,7 @@ const FoodRecipes = () => {
                     </div>
                     <div className='foodDescription'>
                       <p>{category.strCategoryDescription }</p>
-                      <button type='button' className='btn ' onClick={() => viewRecipe(category.strCategory) }>View Recipes</button>
+                      <button type='button' className='btn ' onClick={() => viewRecipe(category.strCategory) }> Recipes < MdKeyboardDoubleArrowRight /> </button>
                     </div>
                 </Col>
                 

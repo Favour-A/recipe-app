@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { GoArrowRight } from "react-icons/go";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaBowlFood } from "react-icons/fa6";
@@ -9,6 +10,7 @@ import { FaBowlFood } from "react-icons/fa6";
 
 import '../App.css';
 import '../styles/recipe.css';
+import '../styles/home.css';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import HomePage from './home';
 import axios from 'axios';
@@ -69,12 +71,12 @@ const RecipePage = () => {
             {recipe.map((meal) => (
           
           <Col>
-            <Card style={{ width: '12rem', height: '25rem'}}>
+            <Card id='recipeCard' style={{ width: '12rem', height: '25rem'}}>
               <Card.Img variant="top" src= {meal.strMealThumb} />
               <Card.Body>
                 <Card.Title>{meal.strMeal}</Card.Title>
                 
-                <Button type='button' class="btn btn-outline-primary btn-sm myBtn" data-bs-toggle="modal" data-bs-target="#foodDetails" onClick={() => HandleSelectedMeal(meal)}  >Full Recipe</Button>
+                <Button type='button' class="btn btn-outline-primary btn-sm myBtn" data-bs-toggle="modal" data-bs-target="#foodDetails" onClick={() => HandleSelectedMeal(meal)} > < MdKeyboardDoubleArrowRight /></Button>
               </Card.Body>
             </Card>
           </Col> 
@@ -84,6 +86,11 @@ const RecipePage = () => {
          
           
     
+        </Row>
+        <Row>
+        <footer>
+          <p>© 2024 Chefs Academy. All rights reserved.</p>
+        </footer>
         </Row>
 
         <div id='foodDetails'class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -95,7 +102,7 @@ const RecipePage = () => {
     </div>
     <div class="modal-body">
       <h3>{selectedMeal !== null ? selectedMeal.strMeal : ''}</h3>
-      <img src={selectedMeal !== null ? selectedMeal.strMealThumb : ''} alt="food" />
+      <img id='modalImage' src={selectedMeal !== null ? selectedMeal.strMealThumb : ''} alt="food" />
       <h4>Cooking Instructions</h4>
       <p>{selectedMeal !== null ? selectedMeal.strInstructions : ''}</p>
     

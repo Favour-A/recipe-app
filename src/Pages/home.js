@@ -1,6 +1,7 @@
 import react from 'react';
 import { useState, useEffect } from 'react'
 import { GoArrowRight } from "react-icons/go";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
 import { FaBowlFood } from "react-icons/fa6";
 import axios from 'axios';
@@ -16,6 +17,41 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 function HomePage() {
     const [meals, setMeals] = useState([]);
     const [selectedMeal, setSelectedMeal] = useState(null);
+    const [ searchQuery, setSearchQuery ] = useState('');
+
+    
+    const fetchMealsBySearch = () => {
+      
+      const endpoint = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`;
+
+      // Fetch data from the API
+      fetch(endpoint)
+          .then(response => {
+              // Check if response is successful
+              if (response.ok) {
+                  return response.json();
+              }
+              // Handle errors if any
+              throw new Error('Network response was not ok.');
+          })
+          .then(data => {
+              // Process the retrieved data
+              setMeals(data.meals || []); // Ensure that meals array is not null
+          })
+          .catch(error => {
+              console.error('There has been a problem with your fetch operation:', error);
+          });
+  };
+
+  const handleSearchInputChange = event => {
+    setSearchQuery(event.target.value);
+};
+
+// Event handler for search button click
+const handleSearchButtonClick = () => {
+    fetchMealsBySearch();
+};
+
 
     const handleSelectedMeal = (meal) => {
       setSelectedMeal(meal);
@@ -41,12 +77,26 @@ function HomePage() {
 
 
     return (
-      <Container className="text-center">
+      <Container id='container'>
         <Row>
           <Col id='upperDisplay'>
           <div id='search'>
-            <input type="text" placeholder="Search for a recipe" />
-            <button><IoSearchSharp /></button>
+            <input type="text" value={searchQuery}
+                onChange={handleSearchInputChange} placeholder="Search for a recipe"  className="search-input"/>
+            <button onClick={handleSearchButtonClick} className="search-button"><IoSearchSharp /></button>
+            <div className="meal-container">
+            {searchQuery.trim() !== '' ? (
+                    meals.map(meal => (
+                      <div key={meal.idMeal} className="meal-item" >
+                      <h5 data-bs-toggle="modal" data-bs-target="#foodDetails" onClick={() => handleSelectedMeal(meal)}>{meal.strMeal}</h5>
+                      {/* Add more details like image, ingredients, etc. as needed */}
+                  </div>
+                        
+                    ))
+                ) : (
+                    <p className="empty-search-message">Enter a search query to find recipes.</p>
+                )}
+            </div>
           </div>
           <div id='headingText'>
             <h6>PREMIUM RECIPES</h6>
@@ -66,12 +116,12 @@ function HomePage() {
         <Row className='cardsContainer' >
           { meals.map((meal) => (
           <Col>
-            <Card style={{ width: '12rem', height: '25rem'}}>
+            <Card id='recipeCard' style={{ width: '12rem', height: '25rem'}}>
               <Card.Img variant="top" src={meal.strMealThumb} />
               <Card.Body>
                 <Card.Title>{meal.strMeal}</Card.Title>
                 
-                <Button type='button' class="btn btn-outline-primary btn-sm myBtn" data-bs-toggle="modal" data-bs-target="#foodDetails" onClick={() => handleSelectedMeal(meal)}>Full Recipe</Button>
+                <Button type='button' class="btn btn-outline-primary btn-sm myBtn" data-bs-toggle="modal" data-bs-target="#foodDetails" onClick={() => handleSelectedMeal(meal)}> <  MdKeyboardDoubleArrowRight/></Button>
               </Card.Body>
             </Card>
           </Col> 
@@ -98,7 +148,7 @@ function HomePage() {
     </div>
     <div class="modal-body">
       <h3>{selectedMeal !== null ? selectedMeal.strMeal : ''}</h3>
-      <img src={selectedMeal !== null ? selectedMeal.strMealThumb : ''} alt="food" />
+      <img id='modalImage' src={selectedMeal !== null ? selectedMeal.strMealThumb : ''} alt="food" />
       <h4>Cooking Instructions</h4>
       <p>{selectedMeal !== null ? selectedMeal.strInstructions : ''}</p>
     

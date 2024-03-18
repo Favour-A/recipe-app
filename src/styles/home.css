@@ -1,28 +1,36 @@
+#container {
+  border-top: 20px solid #fff;
+  text-align: center;
+
+}
+
 
 #upperDisplay {
   width: 100%;
   height: 100vh;
-  background: url("../img/recipe-home.jpg") top center;
+  background: url("../img/recipe-home2..jpg") top center;
   background-size: cover;
 }
 
 .cardsContainer {
   background-color: #fff;
-  margin-top: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
 }
 
-.cardsContainer Card {
-  padding: 20px;
-  border-radius: 30%;
+/* #recipeCard {
+  padding: 50px;
+  border-radius: 5px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-}
+} */
 
 #headingText {
   position: absolute;
   top: 50%;
   left: 70%;
   transform: translate(-50%, -50%);
-  z-index: 1; /* Ensure the text is above the background image */
+  z-index: 1; 
   text-align: right; 
 }
 #headingText h6 {
@@ -55,11 +63,8 @@
 }
 
 #search {
-  position: absolute;
-  top: 5%;
+  top: 20%;
   left: 80%;
-  transform: translate(-50%, -50%);
-  z-index: 1; /* Ensure the text is above the background image */
   text-align: right;
 }
 #search input {
@@ -96,6 +101,7 @@ font-size: 1.5rem;
 }
 
 footer {
+  width: 100%;
   background-color: #88888888;
   text-align: center;
   padding: 10px;
@@ -132,4 +138,95 @@ footer p {
   font-family: 'helvetica';
   margin-bottom: 0.5rem;
   margin-top: 3.5rem;
+}
+
+#modalImage {
+  width: 50%;
+  height: 50%;
+  margin: 0 auto;
+  display: block;
+
+}
+
+.search-input {
+  margin-right: 10px;
+}
+
+.meal-container {
+  display:list-item;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.meal-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 4px;
+  margin: 4px;
+  width: 300px;
+  background-color: #00000094;
+  color: #fff;
+  cursor: pointer;
+}
+
+.empty-search-message {
+  color: #777;
+  font-style: italic;
+  text-align: right;
+}
+
+/* media queries */
+@media (max-width: 768px) {
+  #headingText {
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    z-index: 1; 
+    text-align: center; 
+  }
+  #headingText h1 {
+    font-size: 2.5rem;
+  }
+  #headingText p {
+    font-size: 1rem;
+  }
+  #headingText button {
+    font-size: 1rem;
+  }
+ 
+  #ingredients h4 {
+    font-size: 1.2rem;
+  }
+  #ingredients p {
+    font-size: 1rem;
+  }
+  #modalImage {
+    width: 30%;
+    height: 30%;
+    margin: 0 auto;
+    display: block;
+  }
+  .search-input {
+    margin-right: 5px;
+  }
+  .meal-item {
+    width: 30%;
+    padding: 2px;
+    margin: 2px;
+    width:200px;
+  }
+  #randomDishCol {
+    margin-top: 40px;
+    padding: 15px;
+    
+  }
+  #randomDishCol h2 {
+    font-size: 1.5rem;
+    margin-right: 1.5rem;
+  }
+  .empty-search-message {
+    font-size: 0.9rem;
+  }
+  
 }
