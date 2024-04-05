@@ -11,3 +11,31 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.search-input {
+  margin-right: 10px;
+}
+
+.meal-container {
+  display:list-item;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.meal-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 4px;
+  margin: 4px;
+  width: 300px;
+  background-color: #00000094;
+  color: #fff;
+  cursor: pointer;
+}
+
+.empty-search-message {
+  color: #777;
+  font-style: italic;
+  text-align: right;
+}
+

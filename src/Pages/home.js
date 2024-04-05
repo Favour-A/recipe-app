@@ -24,19 +24,16 @@ function HomePage() {
       
       const endpoint = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`;
 
-      // Fetch data from the API
       fetch(endpoint)
           .then(response => {
-              // Check if response is successful
               if (response.ok) {
                   return response.json();
+                  console.log(response.json());
               }
-              // Handle errors if any
               throw new Error('Network response was not ok.');
           })
           .then(data => {
-              // Process the retrieved data
-              setMeals(data.meals || []); // Ensure that meals array is not null
+              setMeals(data.meals || []); 
           })
           .catch(error => {
               console.error('There has been a problem with your fetch operation:', error);
@@ -44,10 +41,11 @@ function HomePage() {
   };
 
   const handleSearchInputChange = event => {
+  
     setSearchQuery(event.target.value);
 };
 
-// Event handler for search button click
+
 const handleSearchButtonClick = () => {
     fetchMealsBySearch();
 };
@@ -68,7 +66,7 @@ const handleSearchButtonClick = () => {
         const response = await axios.get('https://www.themealdb.com/api/json/v2/9973533/randomselection.php');
           
         setMeals(response.data.meals);
-        console.log(response.data.meals);
+       
       };
 
       getMeal();
@@ -88,8 +86,8 @@ const handleSearchButtonClick = () => {
             {searchQuery.trim() !== '' ? (
                     meals.map(meal => (
                       <div key={meal.idMeal} className="meal-item" >
-                      <h5 data-bs-toggle="modal" data-bs-target="#foodDetails" onClick={() => handleSelectedMeal(meal)}>{meal.strMeal}</h5>
-                      {/* Add more details like image, ingredients, etc. as needed */}
+                     <h5 data-bs-toggle="modal" data-bs-target="#foodDetails" onClick={() => handleSelectedMeal(meal)}>{meal.strMeal}</h5>
+
                   </div>
                         
                     ))
@@ -115,13 +113,13 @@ const handleSearchButtonClick = () => {
         
         <Row className='cardsContainer' >
           { meals.map((meal) => (
-          <Col>
-            <Card id='recipeCard' style={{ width: '12rem', height: '25rem'}}>
+          <Col  key={meal.idMeal}>
+            <Card id='recipeCard' >
               <Card.Img variant="top" src={meal.strMealThumb} />
               <Card.Body>
-                <Card.Title>{meal.strMeal}</Card.Title>
+                <Card.Title id='titleCard'>{meal.strMeal}</Card.Title>
                 
-                <Button type='button' class="btn btn-outline-primary btn-sm myBtn" data-bs-toggle="modal" data-bs-target="#foodDetails" onClick={() => handleSelectedMeal(meal)}> <  MdKeyboardDoubleArrowRight/></Button>
+                <Button type='button' className="btn btn-outline-primary btn-sm myBtn" data-bs-toggle="modal" data-bs-target="#foodDetails" onClick={() => handleSelectedMeal(meal)}> <  MdKeyboardDoubleArrowRight/></Button>
               </Card.Body>
             </Card>
           </Col> 
@@ -139,14 +137,14 @@ const handleSearchButtonClick = () => {
         </Row>
 
 
-<div id='foodDetails'class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-  <div class="modal-content shadow">
-    <div class="modal-header  bg-primary bg-gradient text-white">
-      <h5 class="modal-title">How To Prepare <span>{selectedMeal !== null ? selectedMeal.strMeal : ''}</span></h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div id='foodDetails'className="modal fade" tabIndex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div className="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+  <div className="modal-content shadow">
+    <div className="modal-header  bg-primary bg-gradient text-white">
+      <h5 className="modal-title">How To Prepare <span>{selectedMeal !== null ? selectedMeal.strMeal : ''}</span></h5>
+      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-    <div class="modal-body">
+    <div className="modal-body">
       <h3>{selectedMeal !== null ? selectedMeal.strMeal : ''}</h3>
       <img id='modalImage' src={selectedMeal !== null ? selectedMeal.strMealThumb : ''} alt="food" />
       <h4>Cooking Instructions</h4>
@@ -174,8 +172,8 @@ const handleSearchButtonClick = () => {
       <p>Happy cooking!</p>
     </div>
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+    <div className="modal-footer">
+      <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Close</button>
     </div>
   </div>
 </div>

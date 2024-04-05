@@ -15,12 +15,51 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import HomePage from './home';
 import axios from 'axios';
 import FoodRecipes from "./random-recipes";
+import '../styles/home.css';
 
 
 const RecipePage = () => {
   const [ recipe, setRecipe ] = useState([]);
   const [selectedMeal, setSelectedMeal] = useState(null);
   const navigate = useNavigate();
+  const [meals, setMeals] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const fetchMealsBySearch = () => {
+      
+    const endpoint = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`;
+
+    fetch(endpoint)
+        .then(response => {
+           
+            if (response.ok) {
+                return response.json();
+            }
+            
+            throw new Error('Network response was not ok.');
+        })
+        .then(data => {
+            setMeals(data.meals || []); 
+           
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+};
+
+const handleSearchInputChange = event => {
+  setSearchQuery(event.target.value);
+  fetchMealsBySearch();
+};
+
+const handleSearchButtonClick = () => {
+  fetchMealsBySearch();
+};
+const handleSelectedMeal = (meal) => {
+  setSelectedMeal(meal);
+
+}
+
 
     const HandleBackHome = () => {
         navigate('/');
@@ -31,8 +70,6 @@ const RecipePage = () => {
 
         const response = await axios.get('https://www.themealdb.com/api/json/v1/1/lookup.php?i=' + meal.idMeal);
           
-        
-        console.log(response.data.meals);
 
         setSelectedMeal(response.data.meals[0]);
     };
@@ -44,7 +81,7 @@ const RecipePage = () => {
         const response = await axios.get('https://themealdb.com/api/json/v1/1/filter.php?c=' + id);
           
         setRecipe(response.data.meals);
-        console.log(response.data.meals);
+        
       };
 
       getRecipe();
@@ -52,13 +89,9 @@ const RecipePage = () => {
   }, []);
 
     return (
-        <Container className="text-center">
+        <Container id='container'>
             <Row>
-                <Col className='upperDisplay'>
-                    <div id='search'>
-                        <input type="text" placeholder="Search for a recipe" />
-                        <button><IoSearchSharp /></button>
-                    </div>
+            <Col>
                     <div id='heading'>
                         
                         <button onClick={ HandleBackHome }><span> < GoArrowRight /></span> Chefs Academy</button>
@@ -66,17 +99,38 @@ const RecipePage = () => {
                     </div>
 
                 </Col>
+                <Col>
+                 <div id='search'>
+                  <input type="text" value={searchQuery}
+                onChange={handleSearchInputChange} placeholder="Search for a recipe"  className="search-input"/>
+                 <button onClick={handleSearchButtonClick} className="search-button"><IoSearchSharp /></button>
+                  <div className="meal-container">
+                   {searchQuery.trim() !== '' ? (
+                    meals.map(meal => (
+                      <div key={meal.idMeal} className="meal-item" >                  
+                      <h5 data-bs-toggle="modal" data-bs-target="#foodDetails" onClick={() => handleSelectedMeal(meal)}>{meal.strMeal}</h5>
+
+                      </div>
+                        
+                    ))
+                ) : (
+                    <p className="empty-search-message">Enter a search query to find recipes.</p>
+                )}
+             </div>
+            </div>
+           </Col>
+                
             </Row>
             <Row className='cardsContainer' >
-            {recipe.map((meal) => (
+            {searchQuery.trim() === '' && recipe.map((meal) => (
           
-          <Col>
-            <Card id='recipeCard' style={{ width: '12rem', height: '25rem'}}>
+          <Col key={meal.idMeal}>
+            <Card id='recipeCard' >
               <Card.Img variant="top" src= {meal.strMealThumb} />
               <Card.Body>
                 <Card.Title>{meal.strMeal}</Card.Title>
                 
-                <Button type='button' class="btn btn-outline-primary btn-sm myBtn" data-bs-toggle="modal" data-bs-target="#foodDetails" onClick={() => HandleSelectedMeal(meal)} > < MdKeyboardDoubleArrowRight /></Button>
+                <Button type='button' className="btn btn-outline-primary btn-sm myBtn" data-bs-toggle="modal" data-bs-target="#foodDetails" onClick={() => HandleSelectedMeal(meal)} > < MdKeyboardDoubleArrowRight /></Button>
               </Card.Body>
             </Card>
           </Col> 
@@ -93,14 +147,14 @@ const RecipePage = () => {
         </footer>
         </Row>
 
-        <div id='foodDetails'class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-  <div class="modal-content shadow">
-    <div class="modal-header  bg-primary bg-gradient text-white">
-      <h5 class="modal-title">How To Prepare <span>{selectedMeal !== null ? selectedMeal.strMeal : ''}</span></h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div id='foodDetails'className="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div className="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+  <div className="modal-content shadow">
+    <div className="modal-header  bg-primary bg-gradient text-white">
+      <h5 className="modal-title">How To Prepare <span>{selectedMeal !== null ? selectedMeal.strMeal : ''}</span></h5>
+      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-    <div class="modal-body">
+    <div className="modal-body">
       <h3>{selectedMeal !== null ? selectedMeal.strMeal : ''}</h3>
       <img id='modalImage' src={selectedMeal !== null ? selectedMeal.strMealThumb : ''} alt="food" />
       <h4>Cooking Instructions</h4>
@@ -128,13 +182,12 @@ const RecipePage = () => {
       <p>Happy cooking!</p>
     </div>
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+    <div className="modal-footer">
+      <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Close</button>
     </div>
   </div>
 </div>
 </div>
-      
 
             
         </Container>

@@ -51,6 +51,12 @@
     font-size: 1.2rem;
 }
 
+#heading {
+    left: 0;
+    display: flex;
+    top: 0;
+    
+}
 #heading button {
     order: 1;
     border: none;
